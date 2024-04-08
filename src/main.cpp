@@ -1,18 +1,20 @@
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
+char buffer[50];
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(9600);              //Starting serial communication
+  pinMode(A0, INPUT);
 }
-
+  
 void loop() {
-  // put your main code here, to run repeatedly:
-}
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  float input_voltage = float(analogRead(A0)); // Obtém o valor analógico que varia de 0 a 1023
+  float voltage = (input_voltage * 5) / 1023; // Vamos converter esse valor para tensão elétrica
+  float temperature = voltage / 0.010; // dividimos a tensão por 0.010 que representa os 10 mV
+
+  sprintf(buffer, "Temperature: %f", temperature);
+
+  Serial.println(buffer);     // send the data
+  delay(1000);                    // give the loop some break
 }
