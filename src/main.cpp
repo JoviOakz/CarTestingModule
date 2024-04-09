@@ -20,11 +20,9 @@ void loop()
   sprintf(
     buffer, 
     "{"
-      "\"time\": %lu, "
       "\"res1\": %i, "
-      "\"res2\": %i, "
+      "\"res2\": %i "
     "}",
-    millis(),
     resOne,
     resTwo
   );
