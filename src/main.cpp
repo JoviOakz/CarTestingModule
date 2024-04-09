@@ -1,20 +1,34 @@
 #include <Arduino.h>
 
 char buffer[50];
+const uint16_t PONTENTIOMETER_PINS[2] = {A3, A4};
 
-void setup() {
-  Serial.begin(9600);              //Starting serial communication
-  pinMode(A0, INPUT);
+void setup()
+{
+  Serial.begin(9600); //Starting serial communication
+  for(auto pin : PONTENTIOMETER_PINS)
+  {
+    pinMode(pin, INPUT);
+  }
 }
   
-void loop() {
+void loop()
+{
+  int resOne = analogRead(PONTENTIOMETER_PINS[0]);
+  int resTwo = analogRead(PONTENTIOMETER_PINS[1]);
 
-  float input_voltage = float(analogRead(A0)); // Obtém o valor analógico que varia de 0 a 1023
-  float voltage = (input_voltage * 5) / 1023; // Vamos converter esse valor para tensão elétrica
-  float temperature = voltage / 0.010; // dividimos a tensão por 0.010 que representa os 10 mV
+  sprintf(
+    buffer, 
+    "{"
+      "\"time\": %lu, "
+      "\"res1\": %i, "
+      "\"res2\": %i, "
+    "}",
+    millis(),
+    resOne,
+    resTwo
+  );
 
-  sprintf(buffer, "Temperature: %f", temperature);
-
-  Serial.println(buffer);     // send the data
-  delay(1000);                    // give the loop some break
+  Serial.println(buffer);
+  delay(1000);
 }
